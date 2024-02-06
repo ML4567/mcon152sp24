@@ -1,2 +1,5 @@
-package A_lambdas;public interface StringConsumer {
+package A_lambdas;
+
+public interface StringConsumer {
+    void accept(String s);
 }
