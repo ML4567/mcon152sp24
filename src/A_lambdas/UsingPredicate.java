@@ -6,6 +6,11 @@ import java.util.function.Predicate;
 
 public class UsingPredicate {
     public static void main(String[] args) {
+        // Predicate<String> isEmpty = s -> s.isEmpty();
+        Predicate<String> isEmpty = String::isEmpty;
+        System.out.println(isEmpty.test("a")); // false
+        System.out.println(isEmpty.test("")); // true
+
         Predicate<Integer> isPositive = x -> x > 0;
 
         System.out.println(isPositive.test(-4)); // false
