@@ -31,8 +31,6 @@ public class UsingPredicate {
         // alternatively: Predicate<Integer> isOdd = isEven.negate();
         // alternatively: Predicate<Integer> isOdd = x -> x % 2 == 1;
 
-
-
         int[] arr = {-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
 
         System.out.print("positive: ");
