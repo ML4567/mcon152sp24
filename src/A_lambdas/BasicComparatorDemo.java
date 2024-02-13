@@ -25,9 +25,21 @@ public class BasicComparatorDemo {
          compare method.
          */
 
-        // Comparator<String> byLength = (String s1, String s2) -> {
-        //   return Integer.compare(s1.length(), s2.length());
-        // };
+        /*
+         Comparator<String> byLength = (String s1, String s2) -> {
+             if (s1.length() > s2.length()) {
+                 return 99;
+             } else if (s1.length() < s2.length()) {
+                 return -67;
+             } else {
+                 return 0;
+             }
+         };
+         */
+
+//        Comparator<String> byLength = (String s1, String s2) -> {
+//            return Integer.compare(s1.length(), s2.length());
+//        };
 
         /*
         Since the type of our byLength variable is
@@ -39,18 +51,20 @@ public class BasicComparatorDemo {
         "return" as well as the curly braces around the body.
         */
 
-        // Comparator<String> byLength = (s1, s2) -> Integer.compare(s1.length(), s2.length());
-        // Arrays.sort(arr, byLength); // uses byLength to order the elements
+//        Comparator<String> byLength = (s1, s2) -> Integer.compare(s1.length(), s2.length());
+//        Arrays.sort(arr, byLength); // uses byLength to order the elements
+//        System.out.println("sorted by length: " + Arrays.toString(arr));
 
         // Using the Comparator.comparing(Function keyExtractor) method to create the byLength
         // Comparator<String> byLength = Comparator.comparing(s -> s.length());
         // Now with a method reference instead of a lambda expression
-        Comparator<String> byLength = Comparator.comparing(String::length);
-        Arrays.sort(arr, byLength);
-        System.out.println("sorted by length: " + Arrays.toString(arr));
+//        Comparator<String> byLength = Comparator.comparing(String::length);
+//        Arrays.sort(arr, byLength);
+//        System.out.println("sorted by length: " + Arrays.toString(arr));
 
-        // Using the thenComparing(Function keyExtractor) method
-        Comparator<String> byLengthThenAlphabetically = Comparator.comparing(String::length).thenComparing(String::compareTo);
+        // Using the thenComparing(Comparator other) method
+        Comparator<String> byLengthThenAlphabetically =
+                Comparator.comparing(String::length).thenComparing(String::compareTo);
         Arrays.sort(arr, byLengthThenAlphabetically);
         System.out.println("sorted by length then alphabetically: " + Arrays.toString(arr));
     }

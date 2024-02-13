@@ -9,29 +9,50 @@ import java.util.OptionalInt;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/*
+A stream has three sections:
+- source, such as a collection (must have exactly one)
+- intermediate operations (as many as you want, 0 to infinity)
+- terminal operation (must have exactly one)
+
+We use streams to construct a "pipeline" through which elements flow from the source
+through the intermediate operations to the terminal operation.
+
+A stream does not modify the contents of the source.
+
+The intermediate operations (like filter, map, etc.) each returns a new Stream.
+
+Intermediate operations: filter
+
+Terminal operations: count, max
+
+Optional:
+ */
+
 public class StreamStringExamples {
     public static void main(String[] args) {
         List<String> strings = List.of("chocolate", "coffee", "tea", "", "biscuit", "muffin", "doughnut", "tea", "cookie");
 
         // count strings starting with 'c'
-        long numStartingWithC = strings.stream()
-                .filter(s -> s.startsWith("c"))
-                .count();
+        long numStartingWithC = strings.stream() // Stream<String>
+                .filter(s -> s.startsWith("c"))  // Stream<String>
+                .count(); // long
         System.out.println("numStartingWithC = " + numStartingWithC);
 
         // find any longest string; print if present
-        Optional<String> longestString = strings.stream().max(Comparator.comparingInt(String::length));
-        longestString.ifPresent(System.out::println);
+        Optional<String> longestString = strings.stream() // Stream<String>
+                .max(Comparator.comparing(String::length)); // Optional<String>
+        longestString.ifPresent(System.out::println); // will print the max if there is one, otherwise does nothing
 
         // print any longest string, if present
         strings.stream()
-                .max(Comparator.comparingInt(String::length))
+                .max(Comparator.comparing(String::length))
                 .ifPresent(System.out::println);
 
         // find any longest string starting with 'c'
         Optional<String> longestStringStartingWithC = strings.stream()
                 .filter(s -> s.startsWith("c"))
-                .max(Comparator.comparingInt(String::length));
+                .max(Comparator.comparing(String::length));
         System.out.println(longestStringStartingWithC.orElse("no longest string starting with 'c' available"));
 
         // find length of the longest string
@@ -100,10 +121,12 @@ public class StreamStringExamples {
         Map<Integer, List<String>> map1 = strings.stream().collect(Collectors.groupingBy(String::length));
         map1.forEach((len, wordList) -> System.out.println(len + ": " + wordList));
 
+        // OPTIONAL:
         // group the strings into sets by their lengths
         Map<Integer, Set<String>> map2 = strings.stream().collect(Collectors.groupingBy(String::length, Collectors.toSet()));
         map2.forEach((len, wordSet) -> System.out.println(len + ": " + wordSet));
 
+        // OPTIONAL:
         // create a map from string lengths to the number of strings of those lengths (for length 6 there are 3 strings, etc.)
         Map<Integer, Long> map3 = strings.stream().collect(Collectors.groupingBy(String::length, Collectors.counting()));
         map3.forEach((len, count) -> System.out.println(len + ": " + count));
