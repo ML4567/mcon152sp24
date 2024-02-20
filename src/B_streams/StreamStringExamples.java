@@ -1,18 +1,12 @@
 package B_streams;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
 A stream has three sections:
 - source, such as a collection (must have exactly one)
-- intermediate operations (as many as you want, 0 to infinity)
+- intermediate operations (as many as you want, even none)
 - terminal operation (must have exactly one)
 
 We use streams to construct a "pipeline" through which elements flow from the source
@@ -22,11 +16,22 @@ A stream does not modify the contents of the source.
 
 The intermediate operations (like filter, map, etc.) each returns a new Stream.
 
-Intermediate operations: filter
+Intermediate operations: filter, map, mapToInt, distinct, sorted
 
-Terminal operations: count, max
+Terminal operations: count, max, toList, average, sum, forEach, findAny, collect
 
-Optional:
+Optional: is either empty or contains a value.
+
+Stream is a generic interface, so we can have Stream<String>, Stream<Person>, Stream<Integer>.
+
+There are also primitive specializations for int, long and double: IntStream, LongStream, and DoubleStream.
+
+To convert from IntStream to Stream<Integer> (for example) use the boxed() method of IntStream, which returns a Stream<Integer>.
+
+To convert from Stream<T> (where T is String or Integer, etc.) to IntStream (for example) use the mapToInt method, which takes a function that maps objects of type T to ints.
+
+Just as there are primitive specializations for Stream<Integer>, etc., so too are there
+primitive specializations for Optional<Integer>: OptionalInt, OptionalLong, OptionalDouble
  */
 
 public class StreamStringExamples {
@@ -50,14 +55,15 @@ public class StreamStringExamples {
                 .ifPresent(System.out::println);
 
         // find any longest string starting with 'c'
-        Optional<String> longestStringStartingWithC = strings.stream()
-                .filter(s -> s.startsWith("c"))
+        Optional<String> longestStringStartingWithC = strings.stream() // Stream<String>
+                .filter(s -> s.startsWith("c")) // Stream<String>
                 .max(Comparator.comparing(String::length));
         System.out.println(longestStringStartingWithC.orElse("no longest string starting with 'c' available"));
 
         // find length of the longest string
-        OptionalInt lengthOfLongestString = strings.stream()
-                .mapToInt(String::length)
+        OptionalInt lengthOfLongestString = strings.stream() // Stream<String>
+                // .map(String::length) // Stream<Integer>, but we want to be able to call no-arg max method
+                .mapToInt(String::length) // IntStream
                 .max();
         System.out.println("lengthOfLongestString = " + lengthOfLongestString.orElseThrow());
 
@@ -71,7 +77,7 @@ public class StreamStringExamples {
 
         // get average length of strings that start with 'c'
         OptionalDouble averageLengthOfStringsStartingWithC = strings.stream()
-                .filter(s -> s.startsWith("c"))
+                .filter(s -> s.startsWith("c")) // Stream<String>
                 .mapToInt(String::length)
                 .average();
         averageLengthOfStringsStartingWithC.ifPresent(System.out::println);
@@ -98,27 +104,28 @@ public class StreamStringExamples {
 
         // print strings sorted by length, then alphabetically
         strings.stream()
-                .sorted(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()))
+                .sorted(Comparator.comparing(String::length).thenComparing(Comparator.naturalOrder()))
                 .forEach(System.out::println);
 
-        // print a string of length 6. if there are multiple ones, print any; if there
-        // are none, print nothing
+        // print a string of length 6. if there are multiple ones, print any;
+        // if there are none, print nothing
         strings.stream()
-                .filter(s -> s.length() == 6)
+                .filter(s -> s.length() == 6) // Stream<String>
                 .findAny()
                 .ifPresent(System.out::println);
 
         // get sorted list of distinct first characters of the strings
         List<Character> firstCharacters = strings.stream()
-                .filter(s -> !s.isEmpty())
-                .distinct()
+                .filter(s -> !s.isEmpty()) // Stream<String>, no empty Strings
                 .map(s -> s.charAt(0))
-                .sorted()
-                .toList();
+                .distinct() // Stream<Character>, but without duplicates
+                .sorted() // Stream<Character>, but now sorted
+                .toList(); // List<Character>
         firstCharacters.forEach(System.out::println);
 
-        // group the strings into lists by their lengths
-        Map<Integer, List<String>> map1 = strings.stream().collect(Collectors.groupingBy(String::length));
+        // group the strings into lists by their lengths: have one List of Strings of length 0, another List of Strings of length 6, etc.
+        Map<Integer, List<String>> map1 = strings.stream()
+                .collect(Collectors.groupingBy(String::length));
         map1.forEach((len, wordList) -> System.out.println(len + ": " + wordList));
 
         // OPTIONAL:
