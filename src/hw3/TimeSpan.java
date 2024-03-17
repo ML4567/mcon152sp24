@@ -8,6 +8,11 @@ public class TimeSpan implements Comparable<TimeSpan> {
     public static final TimeSpan ZERO = new TimeSpan(0), ONE_MINUTE = new TimeSpan(1), ONE_HOUR = new TimeSpan(60);
 
     private TimeSpan(int totalMinutes) {
+        if (totalMinutes < 0) {
+            throw new IllegalArgumentException();
+            // should never happen, but just in case
+        }
+
         this.totalMinutes = totalMinutes;
     }
 
