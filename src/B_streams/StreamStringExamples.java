@@ -4,8 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /*
-A stream has three sections:
-- source, such as a collection (must have exactly one)
+A stream pipeline has three parts:
+- source, such as a collection (a pipeline has exactly one)
 - intermediate operations (as many as you want, even none)
 - terminal operation (must have exactly one)
 
@@ -36,7 +36,9 @@ primitive specializations for Optional<Integer>: OptionalInt, OptionalLong, Opti
 
 public class StreamStringExamples {
     public static void main(String[] args) {
-        List<String> strings = List.of("chocolate", "coffee", "tea", "", "biscuit", "muffin", "doughnut", "tea", "cookie");
+        List<String> strings = List.of(
+                "chocolate", "coffee", "tea", "", "biscuit", "muffin", "doughnut", "tea", "cookie"
+        );
 
         // count strings starting with 'c'
         long numStartingWithC = strings.stream() // Stream<String>

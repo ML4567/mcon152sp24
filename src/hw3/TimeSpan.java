@@ -9,8 +9,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
 
     private TimeSpan(int totalMinutes) {
         if (totalMinutes < 0) {
-            throw new IllegalArgumentException();
-            // should never happen, but just in case
+            throw new IllegalArgumentException("negative totalMinutes");
         }
 
         this.totalMinutes = totalMinutes;
@@ -25,9 +24,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
     }
 
     public static TimeSpan ofMinutes(int totalMinutes) {
-        if (totalMinutes < 0) {
-            throw new IllegalArgumentException("negative totalMinutes");
-        }
+
 
         // simple: return new TimeSpan(totalMinutes);
 
