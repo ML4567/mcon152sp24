@@ -14,7 +14,7 @@ We have two hierarchies: the abstraction (logger) and the implementation (output
 and a bridge between them.
  */
 
-// abstraction
+// abstraction (what the client interacts with)
 class Logger {
     protected final Outputter outputter;
 
@@ -68,7 +68,7 @@ class FileOutputter implements Outputter {
 class NetworkOutputter implements Outputter {
     @Override
     public void output(String message) {
-        System.out.println("logging to network...."); // TODO
+        System.out.println("outputting to network...."); // TODO
     }
 }
 

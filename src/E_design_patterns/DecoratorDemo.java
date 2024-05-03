@@ -15,15 +15,15 @@ public class DecoratorDemo {
 
         // unmodifiableList.add(5); // throws UnsupportedOperationException
 
-        // not sure about this...
         InputStream fileInputStream = new FileInputStream("input.txt");
-        InputStream dataInputStream = new DataInputStream(fileInputStream);
-        InputStream bufferedInputStream = new BufferedInputStream(dataInputStream);
+        InputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
 
-        // note that FileInputStream, DataInputStream, and BufferedInputStream all inherit from InputStream.
+        // note that FileInputStream, BufferedInputStream, and DataInputStream all inherit from InputStream.
         // They each have a constructor that takes any type of InputStream and "decorates" that underlying InputStream with new behavior.
+        // BufferedInputStream adds buffering functionality, while DataInputStream adds the ability to read primitive data types.
 
         // or we can do it in one statement:
-        InputStream inputStream = new BufferedInputStream(new DataInputStream(new FileInputStream("input.txt")));
+        DataInputStream dataInputStream2 = new DataInputStream(new BufferedInputStream(new FileInputStream("input.txt")));
     }
 }
