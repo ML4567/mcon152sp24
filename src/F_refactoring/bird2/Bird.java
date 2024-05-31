@@ -41,4 +41,4 @@ class NorwegianBlueBird extends Bird {
     }
 }
 
-class NewBird extends Bird {} // compiler error, which is good because it forces us to decide the speed
+// class NewBird extends Bird {} // compiler error, which is good because it forces us to decide the speed

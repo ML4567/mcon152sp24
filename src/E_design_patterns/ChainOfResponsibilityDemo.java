@@ -36,7 +36,7 @@ public class ChainOfResponsibilityDemo {
 
     // can throw InputMismatchException (if the data is not an int)
     // or NoSuchElementException (if the user entered Control-D, which indicates end of input)
-    // ArithmeticException (if denominator is 0)
+    // or ArithmeticException (if denominator is 0)
     private static void method3(Scanner scanner) {
         System.out.print("integer numerator: ");
         int numerator = scanner.nextInt();
